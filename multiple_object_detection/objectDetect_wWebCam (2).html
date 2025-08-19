@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Multiple object classification using pre trained COCO-SSD model in TensorFlow.js</title>
+    <meta charset="utf-8">
+    <!-- Import the webpage's stylesheet -->
+    <link rel="stylesheet" href="style (1).css">
+    <div>
+      <label for="confidence-threshold-slider">Confidence threshold:</label>
+      <input type="range" id="confidence-threshold-slider" name="confidence-threshold-slider" min="10" max="95" step="5" value="66">
+    </div>
+  </head>  
+  <body>
+    <h1>Multiple Object Classification App</h1> <!-- h1 heading tag -->
+
+    <p>Wait for the COCO-SSD model to load, and then the "Enable Webcam button" will become visible, and then you can click it!!.</p> <!-- paragraph tag -->
+    
+    <section id="demos" class="invisible"> <!-- Defines a section, initally invisible until coco-ssd model loads -->
+
+      <p>After you enable the webcam hold some objects close to your webcam to get a real-time classification! </p> <!-- paragraph tag -->
+      
+      <div id="liveView" class="camView"> <!-- Division(container) tag which will be styled with CSS -->
+        <button id="webcamButton">Enable Webcam</button> <!-- Defines a clickable button -->
+        <video id="webcam" autoplay muted width="800" height="780"></video> <!-- The video tag is used to embed video content in a document --> 
+      </div>
+      
+    </section>
+
+    <!-- Import TensorFlow.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.12.0/dist/tf.min.js"></script>
+    <!-- Load the coco-ssd model to use to recognize things in images -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.0.4/dist/mobilenet.min.js"></script>
+
+    <!-- Import the page's JavaScript to do some stuff -->
+    <script src="script (2).js" defer></script>
+  </body>
+</html>

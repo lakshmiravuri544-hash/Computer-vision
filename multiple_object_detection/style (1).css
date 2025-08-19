@@ -1,0 +1,57 @@
+body {
+  font-family: 'Times New Roman';
+  margin: 2em;
+  color: rgb(51, 56, 85);
+}
+
+h1 {
+  font-style: italic;
+  color: rgba(8, 146, 245, 0.9);
+  font-size: 5em;
+}
+
+video {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+
+section {
+  opacity: 1;
+  transition: opacity 500ms ease-in-out;
+}
+
+.removed {
+  display: none;
+}
+
+.invisible {
+  opacity: 0.5;
+}
+
+.camView {
+  position: relative;
+  float: right;
+  width: calc(100% - 30px);
+  margin: 20px;
+  cursor: pointer;
+}
+
+.camView p {
+  position: absolute;
+  padding: 7px;
+  background-color: rgba(230, 135, 149, 0.8);
+  color: #100f0f;
+  border: 2px solid rgba(17, 207, 131, 0.7);
+  z-index: 2;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.highlighter {
+  background: rgba(0, 166, 255, 0.2);
+  border: 2px solid #060606;
+  z-index: 1;
+  position: absolute;
+  border-radius: 10px;
+}

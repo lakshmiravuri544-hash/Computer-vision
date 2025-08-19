@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!��----------------------------�---------------->
+<!�� Prof R Intro to CV lect 5 Mandelbrot Set ��>
+<!��---------------------��---------------------�>
+<html>
+<head>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+precision highp float;
+in vec2 vPosition;
+uniform mat4 P;
+
+void main()
+{
+    gl_Position = P * vec4(vPosition, 0, 1);
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+precision highp float;
+
+uniform vec2 viewportDimensions;
+uniform float left;
+uniform float right;
+uniform float bottom;
+uniform float topBound;
+
+uniform float u_time;
+
+out vec4 FragColor ; 
+
+void main()
+{
+     //fColor = vec4(1.0, 0.0, 0.0, 1.0);
+     // [0, 1280] -> [-2.0, 2.0] and [0,720] -> [-2.0, 2.0]
+     float a = gl_FragCoord.x/viewportDimensions.x;
+     float b = gl_FragCoord.y/viewportDimensions.y;
+
+     vec2 c = vec2(left +a * (right - left), bottom +b * (topBound -bottom));
+   
+     // Mandelbrot formula
+     vec2 z = c;
+     
+     int i = 0;
+
+     float maxIterations = 2000.0;
+     const int imaxIterations = 2000;
+     float v = 0.0;
+
+     for (int j = 0; j< imaxIterations; j++)
+     { 
+        i = j;
+        float t = 2.0 *z.x *z.y + c.y;    //imaginary = (z.x * z.y + z.x * z.y) + c.i
+        z.x = z.x *z.x -z.y*z.y + c.x;   //real = z.x * z.x -z.y * z.y + c.x
+        z.y = t;                        // now set z.y
+
+        v = z.x * z.x + z.y * z.y;
+        if (v > 4.0)
+        {
+            break;
+        }
+     }
+     const float PI = 3.14159;
+     
+     v = min ( v, 1.0);
+     FragColor. r =  cos (v * 5.5);
+     FragColor. g =  cos (v * 2.5);
+     FragColor. b = (i < 1000) ? ((i <200) ? .10 : .4) :.6;
+     FragColor. a = 1.0;
+}            
+</script> 
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="Mandelbrot.js"></script>
+</head>
+
+<body>
+<canvas id="gl-canvas" width="1280" height="720"> <!---- Set canvas to be 720P -->
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>

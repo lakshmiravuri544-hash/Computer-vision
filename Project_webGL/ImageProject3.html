@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!��----------------------------�---------------------------->
+<!��---------------------��-------------------------------�>
+<html>
+<head>
+    <title>Sobel Filter</title>
+    <h3>Slect any filter to view </h3>
+    <select id="mymenu" size="5">
+        <option value="0">no filter</option>
+        <option value="1">Blur</option>
+        <option value="2">triangle Blur</option>
+        <option value="3">Sharpen</option>
+        <option value="4">Sharpen 2</option>
+        <option value="5">Sharpen 8</option>
+        <option value="6">Edge Detector</option>
+        <option value="7">Unsharpen</option>
+        <option value="8">GausianBlur</option>
+        <option value="9">GausianBlur2</option>
+        <option value="10">Sobel Vertical</option>
+        <option value="11">Sobel Horizental</option>
+        <option value="12">Emboss</option>
+        <option value="13">Prewitt Vertical</option>
+        <option value="14">Prewitt Horizental</option>
+
+    </select>
+
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #version 300 es
+
+        in  vec2 vPosition;
+        in  vec2 vTexCoord;
+        out vec2 fTexCoord;
+
+        uniform mat4 P;
+
+        void main()
+        {
+            fTexCoord = vTexCoord;
+
+            gl_Position = P * vec4(vPosition, 0, 1);
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #version 300 es
+        precision mediump float;
+
+        in vec2 fTexCoord;
+        out vec4 fColor;
+
+        uniform bool grayScale;
+        uniform sampler2D texMap;
+        uniform vec3 dimAndKernelWeight;
+        uniform float kernel[9];
+
+
+        void main()
+        {
+            vec2 onePixel = vec2(1.0 / dimAndKernelWeight[0] , 1.0 / dimAndKernelWeight[1]);
+
+            vec4 p1 = texture(texMap, fTexCoord + onePixel * vec2(-1, -1));
+            vec4 p2 = texture(texMap, fTexCoord + onePixel * vec2( 0, -1));
+            vec4 p3 = texture(texMap, fTexCoord + onePixel * vec2( 1, -1));
+            vec4 p4 = texture(texMap, fTexCoord + onePixel * vec2(-1,  0));
+            vec4 p5 = texture(texMap, fTexCoord + onePixel * vec2( 0,  0));
+            vec4 p6 = texture(texMap, fTexCoord + onePixel * vec2( 1,  0));
+            vec4 p7 = texture(texMap, fTexCoord + onePixel * vec2(-1,  1));
+            vec4 p8 = texture(texMap, fTexCoord + onePixel * vec2( 0,  1));
+            vec4 p9 = texture(texMap, fTexCoord + onePixel * vec2( 1,  1));
+
+            if (grayScale)
+            {
+                float i1 = dot(p1.rgb, vec3(0.299, 0.587, 0.114));
+                float i2 = dot(p2.rgb, vec3(0.299, 0.587, 0.114));
+                float i3 = dot(p3.rgb, vec3(0.299, 0.587, 0.114));
+                float i4 = dot(p4.rgb, vec3(0.299, 0.587, 0.114));
+                float i5 = dot(p5.rgb, vec3(0.299, 0.587, 0.114));
+                float i6 = dot(p6.rgb, vec3(0.299, 0.587, 0.114));
+                float i7 = dot(p7.rgb, vec3(0.299, 0.587, 0.114));
+                float i8 = dot(p8.rgb, vec3(0.299, 0.587, 0.114));
+                float i9 = dot(p9.rgb, vec3(0.299, 0.587, 0.114));
+
+
+                //create black and white image
+                float sum = i1 * kernel[0] + i2 * kernel[1] + i3 * kernel[2] + i4 * kernel[3] + i5 * kernel[4] + i6 * kernel[5] + i7 * kernel[6] + i8 * kernel[7] + i9 * kernel[8];
+                float avg = sum / dimAndKernelWeight[2];
+                vec3 col = vec3(avg, avg, avg);
+
+                fColor = vec4(col.rgb, 1.0);
+            }
+
+            else
+            {
+                vec4 colorSum = p1 * kernel[0] + p2 * kernel[1] + p3 * kernel[2] + p4 * kernel[3] + p5 * kernel[4] + p6 * kernel[5] + p7 * kernel[6] + p8 * kernel[7] + p9 * kernel[8];
+                fColor = vec4 ((colorSum / dimAndKernelWeight[2]).rgb , 1);
+            }
+
+        }
+
+    </script>
+
+    <script type="text/javascript" src="initShaders.js"></script>
+    <script type="text/javascript" src="MVnew.js"></script>
+    <script type="text/javascript" src="ImageVideoProject3.js"></script>
+</head>
+
+<body>
+<canvas id="gl-canvas" width="1280" height="720"> <!---- Set canvas to be 720P -->
+    Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<img id="texImage" src="rose.png" hidden></img>
+</body>
+</html>
