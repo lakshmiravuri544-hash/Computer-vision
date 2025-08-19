@@ -56,7 +56,7 @@ This repository contains multiple projects demonstrating the application of **Ar
 
 ## 🛠️ Tech Stack  
 - **Languages**: Python, JavaScript, HTML, CSS  
-- **Frameworks/Libraries**: WebGL, Pygame, OpenCV (likely), TensorFlow.js (for object detection)  
+- **Frameworks/Libraries**: WebGL, Pygame, OpenCV, TensorFlow.js (for object detection)  
 - **Tools**: VS Code, PowerPoint for presentations  
 
 ---
